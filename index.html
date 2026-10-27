@@ -1,0 +1,775 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thảo Nhi — Little Blue World</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Quicksand:wght@400;500;600;700&display=swap');
+
+:root {
+  --sky: #a8d9ed;
+  --blue: #5288aa;
+  --navy: #233f5a;
+  --ice: #e8f6fa;
+  --white: #f7fcff;
+  --muted: #66879d;
+  --pixel: 4px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  color: var(--navy);
+  font-family: 'Quicksand', sans-serif;
+  background: #d9edf5;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.pixel {
+  image-rendering: pixelated;
+  box-shadow: 4px 4px 0 rgba(35,63,90,.12);
+}
+
+.sky {
+  position: relative;
+  min-height: 660px;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg, #8ac9e9 0%, #b8e1f1 58%, #e2f2f7 100%
+  );
+  border-bottom: 6px solid #fff;
+}
+
+.sky::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: .35;
+  pointer-events: none;
+  background-image:
+    radial-gradient(#fff 1.5px, transparent 1.5px);
+  background-size: 36px 36px;
+  mask-image: linear-gradient(to bottom, black, transparent 85%);
+}
+
+.topbar {
+  position: relative;
+  z-index: 5;
+  max-width: 1050px;
+  margin: auto;
+  padding: 25px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+
+.logo {
+  font-family: 'VT323', monospace;
+  font-size: 27px;
+  letter-spacing: 1px;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.nav a:hover { color: white; }
+
+.hero {
+  position: relative;
+  z-index: 2;
+  max-width: 850px;
+  margin: 65px auto 0;
+  padding: 20px;
+  text-align: center;
+}
+
+.label {
+  display: inline-block;
+  padding: 8px 12px;
+  background: rgba(255,255,255,.55);
+  border: 2px solid white;
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  letter-spacing: 1px;
+}
+
+h1 {
+  margin: 20px 0 10px;
+  font-family: 'VT323', monospace;
+  font-size: clamp(62px, 12vw, 112px);
+  line-height: .95;
+  font-weight: 400;
+  color: #fff;
+  text-shadow: 5px 5px 0 #568caf, 9px 9px 0 rgba(35,63,90,.12);
+}
+
+.hero p {
+  max-width: 460px;
+  margin: 22px auto;
+  line-height: 1.9;
+  font-size: 14px;
+  color: #355e78;
+}
+
+.button {
+  display: inline-block;
+  padding: 12px 20px;
+  margin-top: 8px;
+  border: 2px solid var(--navy);
+  background: var(--white);
+  box-shadow: 4px 4px 0 var(--navy);
+  font-size: 12px;
+  font-weight: 700;
+  transition: .2s;
+}
+
+.button:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 var(--navy);
+}
+
+/* Pixel clouds */
+.cloud {
+  position: absolute;
+  width: 100px;
+  height: 24px;
+  background: rgba(255,255,255,.8);
+  box-shadow:
+    20px -20px 0 rgba(255,255,255,.8),
+    40px -20px 0 rgba(255,255,255,.8),
+    60px 0 0 rgba(255,255,255,.8),
+    20px 20px 0 rgba(255,255,255,.8);
+  animation: drift 22s linear infinite;
+}
+
+.cloud.one { top: 150px; left: -180px; }
+.cloud.two {
+  top: 350px;
+  left: -220px;
+  transform: scale(.65);
+  animation-delay: -10s;
+}
+.cloud.three {
+  top: 100px;
+  left: -240px;
+  transform: scale(.45);
+  animation-delay: -15s;
+}
+
+@keyframes drift {
+  from { translate: 0 0; }
+  to { translate: calc(100vw + 500px) 0; }
+}
+
+.star {
+  position: absolute;
+  color: white;
+  font-size: 23px;
+  animation: twinkle 2.5s ease-in-out infinite alternate;
+}
+.s1 { top: 27%; left: 13%; }
+.s2 { top: 17%; right: 15%; animation-delay: .6s; }
+.s3 { top: 45%; right: 11%; animation-delay: 1s; }
+
+@keyframes twinkle {
+  from { opacity: .4; transform: scale(.8); }
+  to { opacity: 1; transform: scale(1.15); }
+}
+
+/* CSS pixel train */
+.train-scene {
+  position: absolute;
+  bottom: 34px;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+}
+
+.track {
+  position: absolute;
+  bottom: 4px;
+  width: 100%;
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg, #719bb0 0 20px, #d9eef6 20px 28px
+  );
+}
+
+.train {
+  position: absolute;
+  bottom: 12px;
+  left: -360px;
+  display: flex;
+  align-items: flex-end;
+  animation: trainRide 17s linear infinite;
+}
+
+.engine {
+  position: relative;
+  width: 100px;
+  height: 48px;
+  background: #436f92;
+  border: 5px solid #284b68;
+  border-bottom: 8px solid #284b68;
+}
+
+.engine::before {
+  content: "";
+  position: absolute;
+  width: 38px;
+  height: 25px;
+  top: -29px;
+  left: 14px;
+  background: #436f92;
+  border: 5px solid #284b68;
+}
+
+.engine::after {
+  content: "";
+  position: absolute;
+  top: -49px;
+  left: 24px;
+  width: 18px;
+  height: 15px;
+  background: #e7f6fa;
+  box-shadow: 8px -9px 0 -3px #fff;
+}
+
+.carriage {
+  position: relative;
+  width: 94px;
+  height: 61px;
+  background: #f0f8fa;
+  border: 5px solid #436f92;
+  border-bottom: 8px solid #436f92;
+}
+
+.carriage::before {
+  content: "";
+  position: absolute;
+  left: 9px;
+  top: 9px;
+  width: 17px;
+  height: 18px;
+  background: #8ac9e9;
+  box-shadow:
+    25px 0 #8ac9e9,
+    50px 0 #8ac9e9;
+}
+
+.wheels {
+  position: absolute;
+  bottom: -17px;
+  left: 10px;
+  width: 17px;
+  height: 17px;
+  background: #284b68;
+  box-shadow: 55px 0 #284b68;
+}
+
+@keyframes trainRide {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(100vw + 600px)); }
+}
+
+/* Main content */
+main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 55px 24px 75px;
+}
+
+.section-head {
+  margin-bottom: 23px;
+}
+
+.eyebrow {
+  font-family: 'VT323', monospace;
+  color: #5984a0;
+  font-size: 21px;
+}
+
+h2 {
+  margin: 5px 0;
+  font-family: 'VT323', monospace;
+  font-size: 42px;
+  font-weight: 400;
+}
+
+.section-head p {
+  margin: 8px 0;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.card {
+  padding: 26px;
+  background: rgba(255,255,255,.78);
+  border: 2px solid #fff;
+  box-shadow: 5px 5px 0 #aacbdc;
+  transition: transform .2s;
+}
+
+.card:hover { transform: translateY(-4px); }
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon {
+  font-size: 28px;
+  filter: saturate(.75);
+}
+
+.tag {
+  font-family: 'VT323', monospace;
+  font-size: 17px;
+  color: #6089a3;
+}
+
+.card h3 {
+  margin: 20px 0 9px;
+  font-size: 19px;
+}
+
+.card p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.9;
+  color: #648094;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 17px;
+}
+
+.chip {
+  padding: 7px 10px;
+  background: #e1f1f8;
+  border: 1px solid #c5e1ee;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.writing {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: .8fr 1.2fr;
+  background: #eaf5f8;
+  border: 2px solid white;
+  box-shadow: 5px 5px 0 #aacbdc;
+}
+
+.writing-art {
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(145deg, #b7dce9, #d9edf4);
+  font-size: 52px;
+}
+
+.writing-art small {
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  color: #527b95;
+}
+
+.writing-text { padding: 28px; }
+
+.writing-text h3 {
+  font-family: 'VT323', monospace;
+  font-size: 32px;
+  font-weight: 400;
+  margin: 5px 0 14px;
+}
+
+.book {
+  padding: 12px 0;
+  border-top: 1px dashed #b5d1df;
+}
+
+.book strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 5px;
+}
+
+.book span {
+  color: #648094;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+/* A softer, darker section */
+.challenge {
+  margin-top: 60px;
+  padding: 32px;
+  color: #d4e0e9;
+  background: linear-gradient(135deg, #35495e, #263746);
+  border: 3px solid #526b80;
+  box-shadow: 6px 6px 0 #a9c4d3;
+}
+
+.challenge .eyebrow { color: #9bb9cf; }
+.challenge h2 { color: #edf5fa; }
+.challenge .section-head p { color: #b2c3d1; }
+
+.challenge-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.subject {
+  padding: 18px;
+  border: 1px solid #5b7185;
+  background: rgba(255,255,255,.045);
+}
+
+.subject strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #edf5fa;
+}
+
+.subject p {
+  margin: 0;
+  color: #b2c3d1;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.note {
+  margin-top: 17px;
+  padding: 14px;
+  border-left: 3px solid #9bb9cf;
+  background: rgba(255,255,255,.06);
+  color: #c5d4df;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.quote {
+  margin-top: 55px;
+  padding: 35px 20px;
+  text-align: center;
+  border-top: 1px dashed #9dbdce;
+  border-bottom: 1px dashed #9dbdce;
+}
+
+.quote p {
+  font-family: 'VT323', monospace;
+  font-size: 29px;
+  line-height: 1.35;
+  margin: 0 0 10px;
+}
+
+.quote small {
+  color: #648094;
+  font-size: 11px;
+}
+
+footer {
+  padding: 25px 15px;
+  text-align: center;
+  background: #c7e3ef;
+  color: #52758b;
+  font-family: 'VT323', monospace;
+  font-size: 19px;
+}
+
+footer span { color: #315a77; }
+
+@media (max-width: 650px) {
+  .nav { gap: 10px; font-size: 10px; }
+  .topbar { padding: 20px 15px; }
+  .hero { margin-top: 55px; }
+  .sky { min-height: 650px; }
+  .grid { grid-template-columns: 1fr; }
+  .writing { grid-template-columns: 1fr; }
+  .writing-art { min-height: 145px; }
+  .challenge { padding: 22px 16px; }
+  .challenge-box { grid-template-columns: 1fr; }
+  main { padding: 42px 18px 55px; }
+}
+</style>
+</head>
+
+<body>
+<header class="sky" id="home">
+  <div class="cloud one"></div>
+  <div class="cloud two"></div>
+  <div class="cloud three"></div>
+  <div class="star s1">✦</div>
+  <div class="star s2">✧</div>
+  <div class="star s3">✦</div>
+
+  <nav class="topbar">
+    <a class="logo" href="#home">TN.exe ✦</a>
+    <div class="nav">
+      <a href="#about">ABOUT</a>
+      <a href="#music">MUSIC</a>
+      <a href="#writing">WRITING</a>
+      <a href="#challenge">MY QUEST</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <span class="label">✦ PLAYER 001 — WELCOME ✦</span>
+    <h1>Thảo Nhi</h1>
+    <p>
+      Một tâm hồn thích lang thang giữa những trang sách,
+      những giai điệu và vô vàn thế giới nhỏ bé.
+      Chào mừng đến với góc trời xanh của tui.
+    </p>
+    <a class="button" href="#about">ENTER MY WORLD ↘</a>
+  </div>
+
+  <div class="train-scene" aria-label="Đoàn tàu pixel đang chạy">
+    <div class="train">
+      <div class="engine"><div class="wheels"></div></div>
+      <div class="carriage"><div class="wheels"></div></div>
+      <div class="carriage"><div class="wheels"></div></div>
+      <div class="carriage"><div class="wheels"></div></div>
+    </div>
+    <div class="track"></div>
+  </div>
+</header>
+
+<main>
+  <section id="about">
+    <div class="section-head">
+      <span class="eyebrow">01 / CHARACTER PROFILE</span>
+      <h2>A little about me.</h2>
+      <p>Không cần phải thật đặc biệt, chỉ cần là phiên bản của chính mình.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <div class="card-top">
+          <span class="icon">☁</span>
+          <span class="tag">PROFILE.dat</span>
+        </div>
+        <h3>Just Nhi things</h3>
+        <p>
+          Một người thích khám phá những điều mới, yêu thế giới sáng tạo
+          và luôn có vài suy nghĩ chạy vòng vòng trong đầu.
+          Tui thích lưu giữ cảm xúc qua những điều mình đọc, nghe và viết.
+        </p>
+        <div class="chips">
+          <span class="chip">Dreamer</span>
+          <span class="chip">Creative soul</span>
+          <span class="chip">Little explorer</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="icon">🎮</span>
+          <span class="tag">HOBBIES.dat</span>
+        </div>
+        <h3>My comfort zone</h3>
+        <p>
+          Nghe nhạc, đọc sách, viết lách, vẽ vời và khám phá
+          những ý tưởng thú vị. Tui cũng thích phong cách pixel,
+          thế giới kỹ thuật số và những thứ mang màu sắc hoài niệm.
+        </p>
+        <div class="chips">
+          <span class="chip">Reading</span>
+          <span class="chip">Writing</span>
+          <span class="chip">Drawing</span>
+          <span class="chip">Pixel art</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="music" style="margin-top:58px">
+    <div class="section-head">
+      <span class="eyebrow">02 / SOUNDTRACK</span>
+      <h2>Music on repeat.</h2>
+      <p>Mỗi giai điệu là một màu sắc khác nhau trong thế giới của tui.</p>
+    </div>
+
+    <div class="grid">
+      <article class="card">
+        <div class="card-top">
+          <span class="icon">♫</span>
+          <span class="tag">NOW PLAYING</span>
+        </div>
+        <h3>My music taste</h3>
+        <p>
+          Từ những giai điệu R&B mơ màng đến năng lượng của K-pop,
+          từ V-pop gần gũi đến âm nhạc US-UK đầy màu sắc.
+          Tui thích để âm nhạc kể hộ những điều đôi khi khó nói thành lời.
+        </p>
+        <div class="chips">
+          <span class="chip">R&B</span>
+          <span class="chip">K-pop</span>
+          <span class="chip">V-pop</span>
+          <span class="chip">US-UK</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="card-top">
+          <span class="icon">🎧</span>
+          <span class="tag">MOOD: CHILL</span>
+        </div>
+        <h3>Late night playlist</h3>
+        <p>
+          Một chiếc tai nghe, bầu trời xanh thẫm,
+          vài bài nhạc phát đi phát lại và thời gian chậm lại một chút.
+          Đôi khi, đó đã là một ngày thật dễ chịu.
+        </p>
+        <div class="chips">
+          <span class="chip">Midnight blue</span>
+          <span class="chip">Daydreaming</span>
+          <span class="chip">Repeat mode ∞</span>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section id="writing" style="margin-top:58px">
+    <div class="section-head">
+      <span class="eyebrow">03 / THE WRITING ROOM</span>
+      <h2>Between the lines.</h2>
+      <p>Một góc nhỏ dành cho những con chữ và thế giới bên trong chúng.</p>
+    </div>
+
+    <div class="writing">
+      <div class="writing-art">
+        <span>📖</span>
+        <span>✦ &nbsp; ☾ &nbsp; ✦</span>
+        <small>OPEN BOOK.exe</small>
+      </div>
+      <div class="writing-text">
+        <h3>Words are little worlds.</h3>
+
+        <div class="book">
+          <strong>01. Văn học Nga</strong>
+          <span>
+            Những chiều sâu tâm lý, câu hỏi về con người và
+            những trăn trở khiến người đọc phải suy ngẫm.
+          </span>
+        </div>
+
+        <div class="book">
+          <strong>02. Văn học hiện thực</strong>
+          <span>
+            Những lát cắt chân thật của cuộc sống, số phận con người
+            và những vấn đề xã hội được phản ánh qua trang viết.
+          </span>
+        </div>
+
+        <div class="book">
+          <strong>03. Phong trào Thơ mới</strong>
+          <span>
+            Cái tôi cá nhân, những rung động tinh tế và vẻ đẹp
+            của cảm xúc trong thơ ca Việt Nam.
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="challenge" class="challenge">
+    <div class="section-head">
+      <span class="eyebrow">04 / SIDE QUEST — IN PROGRESS</span>
+      <h2>The difficult level.</h2>
+      <p>
+        Không phải màn chơi nào cũng dễ vượt qua.
+        Đây là những thử thách tui vẫn đang học cách chinh phục.
+      </p>
+    </div>
+
+    <div class="challenge-box">
+      <div class="subject">
+        <strong>∑ Toán học</strong>
+        <p>
+          Đôi khi còn lúng túng khi giải bài và dễ mắc lỗi
+          trong quá trình tính toán. Cần luyện tập từng bước
+          và rèn sự cẩn thận.
+        </p>
+      </div>
+
+      <div class="subject">
+        <strong>⚗ Hóa học</strong>
+        <p>
+          Những công thức, hóa trị và phương trình đôi lúc
+          khiến tui bối rối. Mục tiêu là hiểu bản chất
+          thay vì chỉ học thuộc.
+        </p>
+      </div>
+
+      <div class="subject">
+        <strong>⌁ Vật lý</strong>
+        <p>
+          Cần thêm thời gian để kết nối lý thuyết với công thức
+          và biết cách áp dụng vào từng dạng bài tập.
+        </p>
+      </div>
+
+      <div class="subject">
+        <strong>↗ Current status</strong>
+        <p>
+          Đang luyện tập. Chưa thành thạo không có nghĩa
+          là không thể tiến bộ. Từng bước một cũng là tiến lên.
+        </p>
+      </div>
+    </div>
+
+    <div class="note">
+      SYSTEM MESSAGE: Mỗi người có một thế mạnh và một tốc độ riêng.
+      Đây chỉ là những kỹ năng đang được nâng cấp — không phải giới hạn
+      của nhân vật.
+    </div>
+  </section>
+
+  <div class="quote">
+    <p>
+      “Somewhere between who I am<br>
+      and who I'm becoming.”
+    </p>
+    <small>✦ A little reminder from Nhi's world ✦</small>
+  </div>
+</main>
+
+<footer>
+  <span>✦ THẢO NHI'S LITTLE BLUE WORLD ✦</span>
+  <div>Made with pixels, music & a little imagination.</div>
+  <div>© 2026 — END OF TRANSMISSION</div>
+</footer>
+</body>
+</html>
